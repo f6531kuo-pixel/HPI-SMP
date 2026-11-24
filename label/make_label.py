@@ -76,6 +76,9 @@ def main(path):
     ax.plot([-3.5, 3.5], [53, 53], color=RED, lw=1.4)
     for j, s in enumerate(f["features"]):
         ax.text(0, 46.5 - j * 5.2, s, ha="center", va="center", fontproperties=FR, fontsize=fs(2.6), color="#333")
+    if f.get("badge"):
+        ax.add_patch(FancyBboxPatch((-12, 26), 24, 5.2, boxstyle="round,pad=0,rounding_size=2.6", fc="none", ec=RED, lw=0.9))
+        ax.text(0, 28.6, f["badge"], ha="center", va="center", fontproperties=FR, fontsize=fs(2.0), color=RED)
     ax.text(R - 3.5, 10.5, f["capacity"], ha="right", va="center", fontproperties=FR, fontsize=fs(1.9), color="#333")
 
     x0 = gap - R + 3.2; y = y1 - 4.0; th = 1.45; lh = th * 1.55
