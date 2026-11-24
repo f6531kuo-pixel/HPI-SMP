@@ -24,7 +24,7 @@
 ## 三、目前狀態／下一步
 1. 2026-11-24 建立骨架（README、CLAUDE.md、docs/）。
 2. 2026-11-24 第一批樣品：藍色 PET 圓瓶＋掀蓋示意圖（draw/bottle_01.json → draw/make_bottle.py → draw/out/bottle_01.png／.pdf）。船主確認：118＝瓶高不含蓋（到瓶口頂）、21.25＝蓋高、15.36＝下蓋、6.06＝上蓋。全高 122.4（184002，船主讀）；瓶頸高 15.8（184048 對尺讀）。樣品 01 尺寸齊全，2026-11-24 船主同意併回 main。
-3. 2026-11-24 護木油 7103 文案＋套標樣品 v1：docs/護木油_文案_v1.md、label/woodoil_v1.json → label/make_label.py → label/out/woodoil_v1.png／.pdf；版型參考 ref/HPI淨化液_瓶身示意.png；容量 150 ml。船主補：靜置 10–15 分、乾燥 24 小時、成分「油脂類保養成分（通過 EN71-3）」。正面加「通過 EN71-3 檢測」紅框徽章（船主 1.A）。2026-11-24 併回 main。待補：條碼、回收標誌、正式 LOGO 檔。
+3. 2026-11-24 護木油 7103 文案＋套標樣品 v1：docs/護木油_文案_v1.md、label/woodoil_v1.json → label/make_label.py → label/out/woodoil_v1.png／.pdf；版型參考 ref/HPI淨化液_瓶身示意.png；容量 150 ml。船主補：靜置 10–15 分、乾燥 24 小時、成分「油脂類保養成分（通過 EN71-3）」。正面加「通過 EN71-3 檢測」紅框徽章（船主 1.A）。2026-11-24 併回 main。2026-11-24 換上船主提供的 LOGO（ref/logo/HPI_logo.jpg）、背面加 PET 1 號回收標誌。待補：條碼。
 4. 之後的修改：每批另開分支，完成後併回 main。
 
 ## 四、作法規範

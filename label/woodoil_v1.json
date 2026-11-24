@@ -42,5 +42,8 @@
       "宏沛國際有限公司\n電話：(037) 232-255\n地址：苗栗縣銅鑼鄉愛興街1號"
     ]
   ],
-  "note": "產品資訊取自官網 www.go.com.tw 木工用化學品「護木油 7103」及船主提供；LOGO 依淨化液示意圖重繪，正式印刷請換原始 LOGO 檔。"
+  "note": "產品資訊取自官網 www.go.com.tw 木工用化學品「護木油 7103」及船主提供；LOGO 用船主提供檔（ref/logo/HPI_logo.jpg）。",
+  "logo": "ref/logo/HPI_logo.jpg",
+  "recycle": "PET",
+  "recycle_code": 1
 }

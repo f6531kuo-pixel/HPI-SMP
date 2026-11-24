@@ -68,8 +68,13 @@ def main(path):
         ax.text(cx, -9, "正面" if i == 0 else "背面", ha="center", fontproperties=FB, fontsize=13)
 
     f = c["front"]; L = 9
-    ax.add_patch(FancyBboxPatch((-L / 2, 70), L, L, boxstyle="round,pad=0,rounding_size=0.8", fc=RED, ec="none"))
-    ax.text(0, 74.5, "HPI", ha="center", va="center", color="white", fontproperties=FB, fontsize=fs(3.2))
+    if c.get("logo") and os.path.exists(os.path.join(ROOT, c["logo"])):
+        L = 11
+        img = plt.imread(os.path.join(ROOT, c["logo"]))
+        ax.imshow(img, extent=(-L / 2, L / 2, 68, 68 + L), zorder=5, interpolation="lanczos")
+    else:
+        ax.add_patch(FancyBboxPatch((-L / 2, 70), L, L, boxstyle="round,pad=0,rounding_size=0.8", fc=RED, ec="none"))
+        ax.text(0, 74.5, "HPI", ha="center", va="center", color="white", fontproperties=FB, fontsize=fs(3.2))
     ax.text(0, 61, f["name"], ha="center", va="center", fontproperties=FB, fontsize=fs(4.6), color="#222")
     if f.get("model"):
         ax.text(0, 56.3, f["model"], ha="center", va="center", fontproperties=FR, fontsize=fs(2.0), color="#666")
@@ -94,8 +99,20 @@ def main(path):
             for s in wrap(body, 25):
                 ax.text(x0, y, s, va="top", fontproperties=FR, fontsize=fs(th), color="#333"); y -= lh
         y -= lh * 0.45
-    ax.add_patch(Rectangle((x0, y0 + 2.5), 6, 6, fc="none", ec="#999", lw=0.6, ls="--"))
-    ax.text(x0 + 3, y0 + 5.5, "回收\n標誌", ha="center", va="center", fontproperties=FR, fontsize=fs(1.2), color="#888")
+    if c.get("recycle"):
+        cxr, cyr, r = x0 + 3.2, y0 + 6.6, 2.9      # 回收三角（追逐箭頭簡化為三角框）＋編號＋材質
+        tri = np.array([[cxr + r * np.cos(a), cyr + r * np.sin(a)] for a in np.deg2rad([90, 210, 330])])
+        ax.add_patch(Polygon(tri, closed=True, fc="none", ec="#222", lw=0.9))
+        for k in (0, 2):   # 左右兩邊的箭頭（底邊留給編號）
+            a, b = tri[k], tri[(k + 1) % 3]
+            mid = a + (b - a) * 0.5
+            ax.annotate("", mid + (b - a) * 0.08, mid - (b - a) * 0.08,
+                        arrowprops=dict(arrowstyle="-|>", color="#222", lw=0.6, mutation_scale=5))
+        ax.text(cxr, cyr - 0.2, str(c.get("recycle_code", "")), ha="center", va="center", fontproperties=FB, fontsize=fs(1.9), color="#222")
+        ax.text(cxr, y0 + 2.2, c["recycle"], ha="center", va="center", fontproperties=FB, fontsize=fs(1.4), color="#222")
+    else:
+        ax.add_patch(Rectangle((x0, y0 + 2.5), 6, 6, fc="none", ec="#999", lw=0.6, ls="--"))
+        ax.text(x0 + 3, y0 + 5.5, "回收\n標誌", ha="center", va="center", fontproperties=FR, fontsize=fs(1.2), color="#888")
     ax.add_patch(Rectangle((gap + R - 3.2 - 18, y0 + 2.5), 18, 7, fc="none", ec="#999", lw=0.6, ls="--"))
     ax.text(gap + R - 12.2, y0 + 6, "條碼 EAN-13", ha="center", va="center", fontproperties=FR, fontsize=fs(1.4), color="#888")
 
