@@ -36,13 +36,14 @@ def main(path):
     Hs = m["body_straight_h"]; Hb = m["bottle_h"]; Ht = m["total_h_with_cap"]
     Hc = m["cap_h"]; Hcu = m["cap_upper_h"]
     rb = a["base_r"]; rc = a["cap_top_r"]
-    Hcb = Ht - Hc            # 蓋下緣＝瓶頸根部（推定）
+    Hcb = Ht - Hc            # 蓋下緣
+    Hn0 = Hb - m["neck_h"] if "neck_h" in m else Hcb   # 瓶頸根部＝肩部頂
     tot_c = RED if M["total_h_with_cap"].get("check") else "k"
 
     t = np.linspace(-np.pi / 2, 0, 20)
     base = np.c_[R - rb + rb * np.cos(t), rb + rb * np.sin(t)]
     t2 = np.linspace(0, np.pi / 2, 40)
-    sh = np.c_[Rn + (R - Rn) * np.cos(t2), Hs + (Hcb - Hs) * np.sin(t2)]
+    sh = np.c_[Rn + (R - Rn) * np.cos(t2), Hs + (Hn0 - Hs) * np.sin(t2)]
     body = np.vstack([[0, 0], base, [R, Hs], sh])
     t3 = np.linspace(0, np.pi / 2, 12)
     cap = np.vstack([[Rc, Hcb], [Rc, Ht - rc], np.c_[Rc - rc + rc * np.cos(t3), Ht - rc + rc * np.sin(t3)], [0, Ht]])
@@ -50,14 +51,14 @@ def main(path):
     fig = plt.figure(figsize=(11.69, 8.27))
     ax = fig.add_axes([0.02, 0.05, 0.57, 0.88]); ax.set_aspect("equal"); ax.axis("off")
     for s in (1, -1):
-        ax.fill_between(s * cap[:, 0], Hcb, cap[:, 1], color="0.85", zorder=0)
         ax.plot(s * body[:, 0], body[:, 1], "k", lw=1.4)
-        ax.plot(s * cap[:, 0], cap[:, 1], "k", lw=1.4)
-        ln(ax, s * Rn, Hcb, s * Rn, Hb, RED, 0.8, "--")     # 蓋內瓶頸
+        ax.fill_between(s * cap[:, 0], Hcb, cap[:, 1], color="0.85", zorder=2)
+        ax.plot(s * cap[:, 0], cap[:, 1], "k", lw=1.4, zorder=3)
+        ax.plot([s * Rn] * 2, [Hn0, Hb], color=RED, lw=0.8, ls="--", zorder=4)     # 蓋內瓶頸
         ln(ax, s * Ri, Hb - 3, s * Ri, Hb, RED, 0.8, ":")
-    ln(ax, -Rc, Hcb, Rc, Hcb, "k", 1.4)
-    ln(ax, -Rc, Ht - Hcu, Rc, Ht - Hcu, "k", 0.9)          # 上下蓋分界
-    ln(ax, -Rn, Hb, Rn, Hb, RED, 0.8, "--")                # 瓶口頂
+    ax.plot([-Rc, Rc], [Hcb, Hcb], "k", lw=1.4, zorder=3)
+    ax.plot([-Rc, Rc], [Ht - Hcu] * 2, "k", lw=0.9, zorder=3)          # 上下蓋分界
+    ax.plot([-Rn, Rn], [Hb, Hb], color=RED, lw=0.8, ls="--", zorder=4)                # 瓶口頂
     ln(ax, 0, -6, 0, Ht + 6, "0.4", 0.6, "-.")
 
     # 右側高度
@@ -76,7 +77,9 @@ def main(path):
     dim_v(ax, xl, Ht - Hcu, Ht, f"{Hcu:g}", side=-1)
     ax.text(xl - 1.2, Ht + 1.5, "上蓋", ha="right", fontsize=8.5)
     dim_v(ax, xl - 9, Hcb, Ht, f"{Hc:g} 蓋高", side=-1)
-    dim_v(ax, -R - 12, Hs, Hcb, f"{Hcb - Hs:.1f} 肩部（推算）", color=RED, side=-1)
+    dim_v(ax, -R - 12, Hs, Hn0, f"{Hn0 - Hs:.1f} 肩部（推算）", color=RED, side=-1)
+    dim_v(ax, Rc + 3, Hn0, Hb, f"{Hb - Hn0:g}", side=1)
+    ln(ax, Rn + 1, Hn0, Rc + 5, Hn0)
     # 直徑
     dim_h(ax, -8, -R, R, f"Ø{m['body_od']:g}  瓶身外徑", dy=-1.2)
     ln(ax, -R, rb, -R, -10); ln(ax, R, rb, R, -10)
@@ -98,8 +101,8 @@ def main(path):
         tx.text(0.17, y, f"{v['note']}〔{v['photo']}〕", fontsize=8.5, va="top", color=c, wrap=True); y -= 0.038
     y -= 0.02
     tx.text(0, y, "推定值（深紅，待確認）", fontsize=11, weight="bold", va="top", color=RED); y -= 0.045
-    for s in [f"瓶底圓角 R{rb:g}", a["note_neck"], f"蓋下緣高 {Hcb:.2f}＝全高-蓋高",
-              f"肩部高 {Hcb-Hs:.1f}＝蓋下緣-直身段，形狀照片比例畫橢圓弧",
+    for s in [f"瓶底圓角 R{rb:g}", a["note_neck"], f"蓋下緣高 {Hcb:.2f}＝全高-蓋高；瓶頸根部 {Hn0:.1f}＝瓶高-瓶頸高",
+              f"肩部高 {Hn0-Hs:.1f}＝瓶高-瓶頸高-直身段，形狀照片比例畫橢圓弧",
               f"下蓋＋上蓋＝{m['cap_lower_h']+Hcu:.2f}，與蓋高 {Hc:g} 差 {m['cap_lower_h']+Hcu-Hc:.2f}（量測誤差）"]:
         tx.text(0, y, "・" + s, fontsize=8.5, va="top", color=RED); y -= 0.036
     y -= 0.02
