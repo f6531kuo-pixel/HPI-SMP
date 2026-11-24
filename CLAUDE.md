@@ -22,4 +22,10 @@
 
 ## 三、目前狀態／下一步
 1. 2026-11-24 建立骨架（README、CLAUDE.md、docs/）。
-2. 第一批：等 Drive 照片上傳後，先做 1 個罐子的示意圖樣品給船主確認，再套用到其他罐子。
+2. 2026-11-24 第一批樣品：藍色 PET 圓瓶＋掀蓋示意圖（draw/bottle_01.json → draw/make_bottle.py → draw/out/bottle_01.png／.pdf）。14 張照片其實是同一支瓶子。待船主確認：118 量到哪裡、21.25／15.36／6.06 量的是什麼。
+
+## 四、作法規範
+- 交付格式：PNG＋PDF（船主 2026-11-24 選 B，不出 DXF）；內容：外形輪廓＋各處尺寸（選 A，不畫膜範圍）。
+- 黑色實線＝卡尺實測；深紅虛線＝推定值。數據放 json，改圖就改 json 再跑 `python3 draw/make_bottle.py draw/bottle_XX.json`。
+- 照片進 repo 前縮到長邊 2,000 px，原圖留 Drive。
+- 讀卡尺：游標卡尺錶盤一圈 1 mm（0.02 mm 刻度），主尺讀整 mm＋錶針小數。
