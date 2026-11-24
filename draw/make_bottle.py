@@ -66,7 +66,7 @@ def main(path):
         ln(ax, x0 + 1, y, xs + 20, y)
     dim_v(ax, xs, 0, Hs, f"{Hs:g}  直身段")
     dim_v(ax, xs + 9, 0, Hb, f"{Hb:g}  瓶高（不含蓋，到瓶口頂）")
-    dim_v(ax, xs + 18, 0, Ht, f"{Ht:g}  全高（含蓋）待確認", color=tot_c)
+    dim_v(ax, xs + 18, 0, Ht, f"{Ht:g}  全高（含蓋）", color=tot_c)
     # 左側：蓋
     xl = -Rc - 5
     for y in (Hcb, Ht - Hcu, Ht):
